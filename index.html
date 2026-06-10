@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SANIDHYA SAHU — Cybersecurity Portfolio</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:#000;color:#00ff41;font-family:'Courier New',monospace;font-size:16px;overflow-x:hidden}
+canvas#grid{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.page{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column}
+.topbar{background:rgba(0,0,0,0.97);border-bottom:1px solid #0f1f0f;padding:9px 18px;display:flex;align-items:center;gap:8px;position:sticky;top:0;z-index:10}
+.dot{width:10px;height:10px;border-radius:50%}
+.wt{color:#55aa55;font-size:13px;margin-left:6px}
+.hero{display:grid;grid-template-columns:170px 1fr 170px;border-bottom:1px solid #0f1f0f}
+.col-l{padding:20px 14px;display:flex;flex-direction:column;gap:7px;border-right:1px solid #0f1f0f;background:rgba(0,0,0,0.90)}
+.col-c{padding:36px 28px 28px;display:flex;flex-direction:column;align-items:center;text-align:center;background:rgba(0,0,0,0.65)}
+.col-r{padding:20px 14px;display:flex;flex-direction:column;gap:6px;border-left:1px solid #0f1f0f;background:rgba(0,0,0,0.90)}
+.sbox{background:rgba(0,0,0,0.95);border:1px solid #0f1f0f;border-radius:3px;padding:9px 11px}
+.stitle{color:#00cc44;font-size:11px;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.sline{color:#559955;font-size:12px;margin-bottom:3px}
+.sline b{color:#00ff41}
+.qrow{display:flex;justify-content:space-between;padding:3px 0;font-size:12px}
+.qval{color:#00ff41;font-weight:bold}
+.qlbl{color:#559955}
+.ptop{color:#55aa55;font-size:12px;margin-bottom:10px;align-self:flex-start}
+.gw{height:40px;display:flex;align-items:center;justify-content:center;width:100%}
+.name{font-size:24px;font-weight:bold;color:#00ff41;letter-spacing:2px}
+.name.glitching{animation:glitch 0.4s steps(1) forwards}
+@keyframes glitch{
+  0%{text-shadow:2px 0 #ff0040,-2px 0 #00ffff;transform:translate(2px,0)}
+  20%{text-shadow:-2px 0 #ff0040,2px 0 #00ffff;transform:translate(-2px,1px)}
+  40%{text-shadow:3px 2px #ff0040,-3px -2px #00ffff;transform:translate(1px,-1px)}
+  60%{text-shadow:2px -2px #ff0040,-2px 2px #00ffff;transform:translate(2px,-2px)}
+  80%{text-shadow:-1px 3px #ff0040,1px -3px #00ffff;transform:translate(-2px,0)}
+  100%{text-shadow:none;transform:translate(0,0)}
+}
+.oneliner{margin-top:9px;font-size:13px;color:#559955}
+.tbar{margin-top:22px;width:100%;display:flex;align-items:center;gap:7px;background:rgba(0,0,0,0.97);border:1px solid #1a4a1a;border-radius:3px;padding:8px 11px}
+.tprompt{color:#00ff41;font-size:13px;white-space:nowrap}
+.tinput{flex:1;background:transparent;border:none;color:#00ff41;font-family:'Courier New',monospace;font-size:13px;outline:none;min-width:0}
+.cursor{display:inline-block;width:7px;height:14px;background:#00ff41;vertical-align:-2px;animation:blink 1s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+.lnk{color:#00cc33;font-size:12px;border:1px solid #0f2a0f;padding:5px 9px;border-radius:2px;display:flex;align-items:center;gap:7px;text-decoration:none;background:rgba(0,0,0,0.80);transition:border-color .2s}
+.lnk:hover{border-color:#00cc33}
+.arr{margin-left:auto;color:#336633;font-size:11px;transition:color .2s}
+.lnk:hover .arr{color:#00cc33}
+svg.li{width:12px;height:12px;flex-shrink:0}
+.cmdhint{background:rgba(0,0,0,0.92);border-bottom:1px solid #0f1f0f;padding:8px 18px;display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+.ch{color:#55aa55;font-size:13px;user-select:none}
+.ch b{color:#00cc44}
+.outbox{flex:1;padding:18px 30px;font-size:13px;line-height:2;min-height:140px;background:rgba(0,0,0,0.72);color:#559955;overflow-y:auto;max-height:380px}
+.outbox a{color:#00cc33;text-decoration:none}
+.outbox a:hover{color:#00ff41;text-decoration:underline}
+.certwall{border-top:1px solid #0f1f0f;padding:20px 28px;background:rgba(0,0,0,0.94)}
+.ct{color:#00cc44;font-size:12px;letter-spacing:1px;text-transform:uppercase;margin-bottom:14px}
+.certs{display:flex;gap:10px;flex-wrap:wrap}
+.cert{background:rgba(0,0,0,0.93);border:1px solid #1a4a1a;color:#00cc33;font-size:13px;padding:10px 18px;border-radius:3px;cursor:pointer;transition:border-color .2s;display:flex;align-items:center;gap:8px;text-decoration:none}
+.cert:hover{border-color:#00ff41;color:#00ff41}
+.ca{color:#336633;font-size:12px;transition:color .2s}
+.cert:hover .ca{color:#00cc33}
+.cert-ip{border-color:#1a3a1a;color:#336633;cursor:default;pointer-events:none}
+.footer{background:rgba(0,0,0,0.97);border-top:1px solid #0f1f0f;padding:8px 18px;display:flex;justify-content:flex-end}
+.fs{color:#00aa44;font-size:11px}
+</style>
+</head>
+<body>
+<canvas id="grid"></canvas>
+<div class="page">
+  <div class="topbar">
+    <div class="dot" style="background:#ff5f56"></div>
+    <div class="dot" style="background:#ffbd2e"></div>
+    <div class="dot" style="background:#27c93f"></div>
+    <span class="wt">root@sanidhya:~/portfolio — bash</span>
+  </div>
+
+  <div class="hero">
+    <div class="col-l">
+      <div class="sbox">
+        <div class="stitle">// System</div>
+        <div class="sline">&gt; Status: <b>ONLINE</b></div>
+        <div class="sline">&gt; Open to: <b>Work</b></div>
+        <div class="sline">&gt; Location: <b>Bangalore, IN</b></div>
+        <div class="sline">&gt; Focus: <b>Defensive</b></div>
+      </div>
+      <div class="sbox">
+        <div class="stitle">// Stats</div>
+        <div class="qrow"><span class="qlbl">Projects</span><span class="qval">2</span></div>
+        <div class="qrow"><span class="qlbl">THM Rooms</span><span class="qval">100+</span></div>
+        <div class="qrow"><span class="qlbl">Certs</span><span class="qval">2</span></div>
+        <div class="qrow"><span class="qlbl">SOC</span><span class="qval">Active</span></div>
+      </div>
+    </div>
+
+    <div class="col-c">
+      <div class="ptop">root@sanidhya:~$ ./init.sh</div>
+      <div class="gw"><div class="name" id="nameEl">Hey, I am Sanidhya.</div></div>
+      <div class="oneliner">Cybersecurity professional — I find what others miss.</div>
+      <div class="tbar">
+        <span class="tprompt">root@sanidhya:~$</span>
+        <input class="tinput" id="tin" placeholder="type a command and press enter..." autocomplete="off" spellcheck="false"/>
+      </div>
+    </div>
+
+    <div class="col-r">
+      <div class="stitle" style="margin-bottom:5px">// Connect</div>
+      <a class="lnk" href="https://github.com/sanidhyasahu12" target="_blank">
+        <svg class="li" viewBox="0 0 16 16" fill="#00cc33"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38v-1.34C3.73 14.44 3.26 13 3.26 13c-.36-.92-.88-1.17-.88-1.17-.72-.49.05-.48.05-.48.8.06 1.22.82 1.22.82.71 1.22 1.86.87 2.31.66.07-.52.28-.87.5-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82A7.66 7.66 0 018 4.07c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48v2.19c0 .21.15.46.55.38C13.71 14.53 16 11.54 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        sanidhyasahu12<span class="arr">&#8599;</span>
+      </a>
+      <a class="lnk" href="https://www.linkedin.com/in/sanidhyasahu12/" target="_blank">
+        <svg class="li" viewBox="0 0 16 16" fill="#00cc33"><path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 01.016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/></svg>
+        sanidhyasahu12<span class="arr">&#8599;</span>
+      </a>
+      <a class="lnk" href="mailto:sanidhyasahu782@gmail.com">
+        <svg class="li" viewBox="0 0 24 24" fill="none" stroke="#00cc33" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><polyline points="2,4 12,13 22,4"/></svg>
+        Mail<span class="arr">&#8599;</span>
+      </a>
+      <a class="lnk" href="https://tryhackme.com/p/Sanidhya001" target="_blank">
+        <span style="font-size:10px;font-weight:bold;color:#00cc33;border:1px solid #00cc33;padding:1px 4px;border-radius:2px;flex-shrink:0">THM</span>
+        Sanidhya001<span class="arr">&#8599;</span>
+      </a>
+      <a class="lnk" href="https://app.hackthebox.com/profile/sanidhyasahu001" target="_blank">
+        <svg class="li" viewBox="0 0 24 24" fill="none" stroke="#00cc33" stroke-width="1.8"><polygon points="12 2 20.5 7 20.5 17 12 22 3.5 17 3.5 7"/><line x1="12" y1="2" x2="12" y2="22"/><line x1="3.5" y1="7" x2="20.5" y2="17"/><line x1="20.5" y1="7" x2="3.5" y2="17"/></svg>
+        sanidhyasahu001<span class="arr">&#8599;</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="cmdhint">
+    <span class="ch"><b>whoami</b></span><span style="color:#2a5a2a">·</span>
+    <span class="ch"><b>tools</b></span><span style="color:#2a5a2a">·</span>
+    <span class="ch"><b>projects</b></span><span style="color:#2a5a2a">·</span>
+    <span class="ch"><b>experience</b></span><span style="color:#2a5a2a">·</span>
+    <span class="ch"><b>thm</b></span><span style="color:#2a5a2a">·</span>
+    <span class="ch"><b>resume</b></span><span style="color:#2a5a2a">·</span>
+    <span class="ch"><b>contact</b></span>
+  </div>
+
+  <div class="outbox" id="out">
+    <span style="color:#3a6a3a">&#9472;&#9472; type a command above and press enter &#9472;&#9472;</span><br><br><span class="cursor"></span>
+  </div>
+
+  <div class="certwall">
+    <div class="ct">// Certification Wall &#8212; click to view PDF</div>
+    <div class="certs">
+      <a class="cert" href="https://raw.githubusercontent.com/sanidhyasahu12/sanidhyasahu12.github.io/main/RedTeam-Certified_IT_Infrastructure_and_Cyber_SOC_Analyst-Certificate.pdf" target="_blank">
+        CICSA v3 &#8212; Red Team Hacker Academy <span class="ca">&#8599; view</span>
+      </a>
+      <a class="cert" href="https://raw.githubusercontent.com/sanidhyasahu12/sanidhyasahu12.github.io/main/CompTIA_Security__ce_certificate.pdf" target="_blank">
+        CompTIA Security+ <span class="ca">&#8599; view</span>
+      </a>
+      <span class="cert cert-ip">EC-Council CSA &#8212; In Progress</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span class="fs">[ all systems secure ]</span>
+  </div>
+</div>
+
+<script>
+(function(){
+'use strict';
+
+// GRID
+var canvas=document.getElementById('grid');
+var ctx=canvas.getContext('2d');
+var W=0,H=0,offset=0;
+var CELL=28;
+function resize(){W=window.innerWidth;H=window.innerHeight;canvas.width=W;canvas.height=H;}
+function drawGrid(){
+  if(W===0||H===0){requestAnimationFrame(drawGrid);return;}
+  ctx.clearRect(0,0,W,H);
+  var o=offset%CELL;
+  ctx.strokeStyle='rgba(0,255,65,0.13)';ctx.lineWidth=0.5;
+  for(var x=-o;x<W+CELL;x+=CELL){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(var y=-o;y<H+CELL;y+=CELL){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  ctx.fillStyle='rgba(0,255,65,0.38)';
+  for(var xi=-o;xi<W+CELL;xi+=CELL)for(var yi=-o;yi<H+CELL;yi+=CELL){ctx.beginPath();ctx.arc(xi,yi,1,0,Math.PI*2);ctx.fill();}
+  var scanY=(offset*0.55)%H;
+  if(isFinite(scanY)&&H>0){
+    var g=ctx.createLinearGradient(0,scanY-50,0,scanY+50);
+    g.addColorStop(0,'rgba(0,255,65,0)');
+    g.addColorStop(0.5,'rgba(0,255,65,0.07)');
+    g.addColorStop(1,'rgba(0,255,65,0)');
+    ctx.fillStyle=g;ctx.fillRect(0,scanY-50,W,100);
+  }
+  offset+=0.35;requestAnimationFrame(drawGrid);
+}
+resize();window.addEventListener('resize',resize);drawGrid();
+
+// GLITCH
+var phrases=["Hey, I am Sanidhya.","I am a Security Researcher.","I am a Blue Team Defender.","I am a Mentor.","I break things to secure them.","I hunt threats for fun.","I read packet captures for breakfast.","I turn vulnerabilities into lessons.","I live in the terminal.","I build tools that do the boring stuff.","I make the internet a little safer.","I am always learning.","I think like an attacker.","I defend like a guardian.","I am just getting started.","I am root@sanidhya."];
+var pi=0;
+var nameEl=document.getElementById('nameEl');
+var glitchTimer=null;
+function triggerGlitch(txt){
+  if(glitchTimer)clearInterval(glitchTimer);
+  nameEl.classList.add('glitching');
+  var chars='!@#$%^&*<>?/|[]{}~`01';
+  var f=0;
+  glitchTimer=setInterval(function(){
+    var out='';
+    for(var i=0;i<txt.length;i++)out+=i<f?txt[i]:(Math.random()>0.5?chars[Math.floor(Math.random()*chars.length)]:txt[i]);
+    nameEl.textContent=out;f++;
+    if(f>txt.length){clearInterval(glitchTimer);glitchTimer=null;nameEl.textContent=txt;nameEl.classList.remove('glitching');}
+  },28);
+}
+setInterval(function(){pi=(pi+1)%phrases.length;triggerGlitch(phrases[pi]);},2800);
+
+// COMMANDS
+var commands={
+  whoami:'<span style="color:#00cc33">&gt; whoami</span><br><br>Name&nbsp;&nbsp;&nbsp;&nbsp;: <b style="color:#00ff41">SANIDHYA SAHU</b><br>Role&nbsp;&nbsp;&nbsp;&nbsp;: Security Researcher / Blue Team Defender<br>Focus&nbsp;&nbsp;&nbsp;: SOC Analyst, Detection &amp; Security Engineer<br>THM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: 100+ rooms solved<br>Open to : Full-time / Internship / Freelance<br><br><span style="color:#559955">I find vulnerabilities before the bad guys do.<br>I build tools. I mentor others. I never stop learning.</span>',
+
+  tools:'<span style="color:#00cc33">&gt; tools --list</span><br><br><span style="color:#00cc44">[ SIEM &amp; Monitoring ]</span><br>&nbsp;&nbsp;Splunk &middot; Log Analysis &middot; Incident Detection &middot; Threat Monitoring &middot; Alert Investigation<br><br><span style="color:#00cc44">[ Networking &amp; Security ]</span><br>&nbsp;&nbsp;Wireshark &middot; Nmap &middot; Nessus &middot; Burp Suite &middot; Metasploit &middot; VirusTotal<br><br><span style="color:#00cc44">[ Frameworks &amp; Concepts ]</span><br>&nbsp;&nbsp;MITRE ATT&amp;CK &middot; Cyber Kill Chain &middot; Incident Response &middot; IDS/IPS &middot; TCP/IP &middot; DNS<br><br><span style="color:#00cc44">[ Programming &amp; Automation ]</span><br>&nbsp;&nbsp;Python &middot; Bash',
+
+  projects:'<span style="color:#00cc33">&gt; projects --list</span><br><br><span style="color:#00ff41">[1]</span> Threat Intelligence Automation Pipeline &nbsp;<a href="https://threat-intel-pipeline.onrender.com/" target="_blank">&#8599; live</a><br>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#3a6a3a">Tools: Python &middot; Flask &middot; VirusTotal API &middot; Shodan &middot; MITRE ATT&CK</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#559955">Built an automated IOC enrichment pipeline for IPs, domains, and hashes.</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#559955">Integrated MITRE ATT&CK mapping with threat severity reports via Flask dashboard.</span><br><br><span style="color:#00ff41">[2]</span> Automated OWASP Vulnerability Scanner &nbsp;<a href="https://owasp-vulnerability-scanner.onrender.com/" target="_blank">&#8599; live</a><br>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#3a6a3a">Tools: Python &middot; OWASP TOP 10 &middot; Flask</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#559955">Python/Flask tool to identify web vulnerabilities aligned with OWASP Top 10.</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<span style="color:#559955">Detects XSS, SQLi, and misconfigurations with structured report output.</span><br><br><span style="color:#2a6a2a">&#9472;&#9472; 2 projects live. More being built. Watch this space. &#9472;&#9472;</span>',
+
+  experience:'<span style="color:#00cc33">&gt; experience --list</span><br><br><span style="color:#00ff41">Red Team Hacker Academy</span> &nbsp;<span style="color:#3a6a3a">Nov 2025 &#8211; Present</span><br><span style="color:#559955">Cyber Security Mentor / Researcher | SOC &amp; Network Analysis | Bangalore, India</span><br><br>&nbsp;&nbsp;<span style="color:#559955">&bull; Delivered practical mentorship on SOC workflows, network analysis, and<br>&nbsp;&nbsp;&nbsp;&nbsp;threat investigation through enterprise-style security labs.</span><br>&nbsp;&nbsp;<span style="color:#559955">&bull; Performed packet inspection, IOC analysis, and protocol monitoring using<br>&nbsp;&nbsp;&nbsp;&nbsp;Splunk, TCP/IP, DNS, and HTTP through 100+ TryHackMe rooms.</span><br>&nbsp;&nbsp;<span style="color:#559955">&bull; Applied MITRE ATT&CK methodologies to analyse attacker behavior, identify<br>&nbsp;&nbsp;&nbsp;&nbsp;attack patterns, and strengthen incident investigation capabilities.</span>',
+
+  thm:'<span style="color:#00cc33">&gt; thm --profile</span><br><br>Platform : TryHackMe<br>Rooms&nbsp;&nbsp;&nbsp;&nbsp;: <b style="color:#00ff41">100+ solved</b><br>Focus&nbsp;&nbsp;&nbsp;&nbsp;: Web exploitation &middot; Privilege escalation &middot; OSINT &middot; SOC<br>Profile&nbsp;&nbsp;: <a href="https://tryhackme.com/p/Sanidhya001" target="_blank">tryhackme.com/p/Sanidhya001 &#8599;</a>',
+
+  resume:'<span style="color:#00cc33">&gt; resume --open</span><br><br><span style="color:#559955">Loading SANIDHYA_SAHU_RESUME.pdf ...</span><br><br><a href="https://raw.githubusercontent.com/sanidhyasahu12/sanidhyasahu12.github.io/main/SANIDHYA_SAHU_RESUME.pdf" target="_blank" style="color:#00ff41">&#8599; Click to open PDF</a>',
+
+  contact:'<span style="color:#00cc33">&gt; contact</span><br><br>Email&nbsp;&nbsp;&nbsp;&nbsp;: <a href="mailto:sanidhyasahu782@gmail.com">sanidhyasahu782@gmail.com</a><br>Phone&nbsp;&nbsp;&nbsp;&nbsp;: <a href="tel:+918871383344">+91 88713 83344</a><br>GitHub&nbsp;&nbsp;&nbsp;: <a href="https://github.com/sanidhyasahu12" target="_blank">sanidhyasahu12 &#8599;</a><br>LinkedIn : <a href="https://www.linkedin.com/in/sanidhyasahu12/" target="_blank">sanidhyasahu12 &#8599;</a><br>THM&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <a href="https://tryhackme.com/p/Sanidhya001" target="_blank">Sanidhya001 &#8599;</a><br>HTB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: <a href="https://app.hackthebox.com/profile/sanidhyasahu001" target="_blank">sanidhyasahu001 &#8599;</a>'
+};
+
+var out=document.getElementById('out');
+var history=[];
+
+function runCommand(v){
+  if(!v)return;
+  var r=commands[v];
+  var block;
+  if(r){block=r;}
+  else{block='<span style="color:#cc3300">command not found: '+v+'</span><br><span style="color:#3a6a3a">available: whoami &middot; tools &middot; projects &middot; experience &middot; thm &middot; resume &middot; contact</span>';}
+  history.push(block);
+  var divider='<br><span style="color:#1a4a1a">&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;&#9472;</span><br><br>';
+  out.innerHTML=history.join(divider)+'<br><br><span class="cursor"></span>';
+  out.scrollTop=out.scrollHeight;
+}
+
+document.getElementById('tin').addEventListener('keydown',function(e){
+  if(e.key==='Enter'){var v=this.value.trim().toLowerCase();this.value='';runCommand(v);}
+});
+
+})();
+</script>
+</body>
+</html>
